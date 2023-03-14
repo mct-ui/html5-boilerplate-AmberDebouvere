@@ -120,6 +120,36 @@ $space-xl: calc($space-m * 2); // 48px
 $space-xxl: calc($space-l * 2); // 64px
 $space-xxxl: calc($space-xl * 2); // 96px
 
+//
+// Media Query mixin
+// @include mq(#point, #query1, #query2);
+//
+
+@mixin mq($breakpoint, $query1: min, $query2: width) {
+  $query: map-get($breakpoints, $breakpoint);
+  
+  @if $query != null {
+  @media (#{$query1}-#{$query2}: #{$query}) {
+  @content;
+  }
+  } @else {
+  @media (#{$query1}-#{$query2}: $breakpoint) {
+  @content;
+  }
+  }
+  }
+  // ---
+  // Settings: Breakpoints
+  // ---
+  
+  $breakpoints: (
+  bp1: calc(577 / 16 * 1em),
+  bp2: calc(769 / 16 * 1em),
+  bp3: calc(993 / 16 * 1em),
+  bp4: calc(1201 / 16 * 1em),
+  bp5: calc(1401 / 16 * 1em),
+  ) !default;
+
 /*---------------------------------------/*
  # GENERIC
 /*---------------------------------------*/
@@ -162,6 +192,7 @@ html {
   font-family: $font-family-primary;
   color: $color-text;
   scroll-behavior: smooth;
+  
 
 }
 
@@ -180,18 +211,47 @@ html {
     Default markup for typographic elements
 */
 
-h1 {
+h1 { 
+  font-size: $ms5;
+  font-weight: 700;
+  line-height: calc($baseline * 4);
+  margin-bottom: $space-m;
+
+  @include mq(bp1){
+    font-size: $ms9;
+    line-height: calc($baseline * 6);
+  }
+
+  @include mq(bp2){
+    font-size: $ms11;
+    line-height: calc($baseline * 8);
+  }
+  
+  
+
 }
 
 h2 {
+  font-weight: 700;
+  font-size: $ms3;
+  line-height: calc($baseline * 3);
+  margin-bottom: $space-m;
 }
 
 h3 {
+  font-weight: 700;
+  font-size: $ms1;
+  line-height: calc($baseline * 3);
+  margin-bottom: $space-m;
 }
 
 h4,
 h5,
 h6 {
+  font-weight: 700;
+  font-size: $ms0;
+  line-height: calc($baseline * 3);
+  margin-bottom: $space-m;
 }
 
 p,
@@ -201,35 +261,60 @@ dl,
 table,
 address,
 figure {
+  margin-bottom: $space-m;
 }
 
 ul,
 ol {
+  padding-left: 0;
+  list-style-position: inside;
 }
 
 li ul,
 li ol {
+  margin-bottom: 0;
 }
 
+
 blockquote {
+  font-size: $ms3;
+  line-height: calc($baseline * 4);
+  margin-bottom: $space-m;
+  font-style: italic;
+  font-family: $font-family-secondary;
 }
 
 figcaption {
+  font-size: $ms-1;
+  line-height: calc($baseline * 2);
+  margin-top: $space-xs;
+  color: $color-text-lighter;
+
 }
 
 hr {
+  border: 0;
+  height: 1px;
+  background-color: $color-border;
+  margin-bottom: $space-m;
 }
 
 a {
+  color: $color-primary;
+  transition: all 0.1s ease-in-out;
+}
+
+
+
+a:visited {
+  color: $color-primary;
 }
 
 a:hover {
+  color: $color-primary-light;
 }
-
-a:visited {
-}
-
 a:active {
+  color: $color-primary-dark;
 }
 
 /*---------------------------------------/*
@@ -243,8 +328,20 @@ a:active {
 */
 
 .o-row {
+  padding: $space-m $space-m 0;
+
+  
 }
 
+.o-row--primary { 
+  background-color: $color-primary;
+  color: white;
+}
+
+.o-row--dark { 
+  background-color: get-color(color-gray, 900);
+  color: white;
+}
 /*
     Objects: Container
     ---
@@ -252,6 +349,10 @@ a:active {
 */
 
 .o-container {
+  max-width: calc(800/ $root-font-size * 1rem);
+  margin: 0 auto;
+
+
 }
 
 /*
